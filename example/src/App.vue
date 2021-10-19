@@ -248,7 +248,7 @@ export default defineComponent({
     Settings,
   },
   data() {
-    const selectedExample = ref(-1);
+    const selectedExample = ref(1);
     const data = ref({});
     const errors: Ref<ErrorObject[] | undefined> = ref(undefined);
 

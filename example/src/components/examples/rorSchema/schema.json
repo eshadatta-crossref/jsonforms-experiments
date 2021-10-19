@@ -37,10 +37,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "country_code",
-        "country_name"
-      ]
+      "required": ["country_code", "country_name"]
     },
     "name": {
       "$ref": "#/definitions/non-empty-string"
@@ -49,212 +46,24 @@
       "type": "string"
     },
     "addresses": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "lat": {
-            "type": "number"
-          },
-          "state_code": {
-            "type": [
-              "string",
-              "number"
-            ]
-          },
-          "country_geonames_id": {
-            "type": "integer"
-          },
-          "lng": {
-            "type": "number"
-          },
-          "state": {
-            "type": [
-              "string",
-              "number"
-            ]
-          },
-          "city": {
-            "type": "string"
-          },
-          "geonames_city": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "nuts_level2": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": [
-                      "string",
-                      "number"
-                    ]
-                  },
-                  "code": {
-                    "type": [
-                      "string",
-                      "number"
-                    ]
-                  }
-                },
-                "required": [
-                  "code",
-                  "name"
-                ]
-              },
-              "geonames_admin2": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "ascii_name": {
-                    "type": [
-                      "string",
-                      "number"
-                    ]
-                  },
-                  "id": {
-                    "type": [
-                      "string",
-                      "number"
-                    ]
-                  },
-                  "name": {
-                    "type": [
-                      "string",
-                      "number"
-                    ]
-                  },
-                  "code": {
-                    "type": [
-                      "string",
-                      "number"
-                    ]
-                  }
-                },
-                "required": [
-                  "ascii_name",
-                  "code",
-                  "id",
-                  "name"
-                ]
-              },
-              "geonames_admin1": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "ascii_name": {
-                    "type": "string"
-                  },
-                  "id": {
-                    "type": "integer"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "code": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "ascii_name",
-                  "code",
-                  "id",
-                  "name"
-                ]
-              },
-              "city": {
-                "type": "string"
-              },
-              "id": {
-                "type": "integer"
-              },
-              "nuts_level1": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "name": {
-                    "type": [
-                      "string",
-                      "number"
-                    ]
-                  },
-                  "code": {
-                    "type": [
-                      "string",
-                      "number"
-                    ]
-                  }
-                },
-                "required": [
-                  "code",
-                  "name"
-                ]
-              },
-              "nuts_level3": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "name": {
-                    "type": [
-                      "string",
-                      "number"
-                    ]
-                  },
-                  "code": {
-                    "type": [
-                      "string",
-                      "number"
-                    ]
-                  }
-                },
-                "required": [
-                  "code",
-                  "name"
-                ]
-              },
-              "license": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "attribution": {
-                    "type": "string"
-                  },
-                  "license": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "attribution",
-                  "license"
-                ]
-              }
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "geonames_city": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "city": {
+              "type": "string"
             },
-            "required": [
-              "city",
-              "geonames_admin1",
-              "id",
-              "license"
-            ]
+            "id": {
+              "type": "integer"
+            }
           },
-          "postcode": {
-            "type": "number"
-          },
-          "primary": {
-            "type": "boolean"
-          },
-          "line": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "city",
-          "country_geonames_id",
-          "geonames_city",
-          "lat",
-          "lng"
-        ]
-      }
+          "required": ["city", "id"]
+        }
+      },
+      "required": ["geonames_city"]
     },
     "types": {
       "type": "array",
@@ -273,10 +82,8 @@
       }
     },
     "established": {
-      "type": [
-        "string",
-        "number"
-      ]
+      "type": ["string", "number"],
+      "default": 0
     },
     "relationships": {
       "type": "array",
@@ -286,11 +93,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "Related",
-              "Parent",
-              "Child"
-            ]
+            "enum": ["Related", "Parent", "Child"]
           },
           "id": {
             "type": "string",
@@ -300,11 +103,7 @@
             "$ref": "#/definitions/non-empty-string"
           }
         },
-        "required": [
-          "id",
-          "label",
-          "type"
-        ]
+        "required": ["id", "label", "type"]
       }
     },
     "email_address": {
@@ -331,16 +130,10 @@
               ]
             },
             "preferred": {
-              "type": [
-                "string",
-                "number"
-              ]
+              "type": ["string", "number"]
             }
           },
-          "required": [
-            "all",
-            "preferred"
-          ]
+          "required": ["all", "preferred"]
         }
       },
       "additionalProperties": false
@@ -362,17 +155,12 @@
             "maxLength": 2
           }
         },
-        "required": [
-          "label",
-          "iso639"
-        ]
+        "required": ["label", "iso639"]
       }
     },
     "status": {
       "type": "string",
-      "enum": [
-        "active"
-      ]
+      "enum": ["active"]
     }
   },
   "definitions": {
@@ -381,20 +169,5 @@
       "minLength": 1
     }
   },
-  "required": [
-    "acronyms",
-    "addresses",
-    "aliases",
-    "country",
-    "established",
-    "external_ids",
-    "id",
-    "labels",
-    "links",
-    "name",
-    "relationships",
-    "status",
-    "types",
-    "wikipedia_url"
-  ]
+  "required": ["name", "types", "established", "addresses"]
 }
