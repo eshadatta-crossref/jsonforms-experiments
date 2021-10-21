@@ -60,22 +60,22 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVuetifyControl(
+    const jsonforms = inject<JsonFormsSubStates>('jsonforms');
+    const vControl = useVuetifyControl(
       useJsonFormsControl(props),
       (value) => parseInt(value, 10) || undefined
     );
+    return { jsonforms, ...vControl };
   },
   methods: {
     fetchAddress(id: string) {
-      const jsonforms = inject<JsonFormsSubStates>('jsonforms');
-      console.log('this: ', jsonforms);
+      console.log('FORMS: ', this.jsonforms.core);
       const url = new URL('http://api.geonames.org/getJSON');
       const params = { geonameId: id, username: 'roradmin' }; // or:
       url.search = new URLSearchParams(params).toString();
       fetch(url.toString()).then((response) => {
         response.json().then((data) => {
           console.log('DATA: ', data);
-          console.log('JSONFORMS: ', this.jsonforms);
         });
       });
     },
