@@ -49,15 +49,54 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "lat": {
+          "type": "number",
+          "readOnly": true
+        },
+        "lng": {
+          "type": "number",
+          "readOnly": true
+        },
+        "country_geonames_id": {
+          "type": "number",
+          "readOnly": true
+        },
         "geonames_city": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
             "city": {
-              "type": "string"
+              "type": "string",
+              "readOnly": true
             },
             "id": {
               "type": "integer"
+            },
+            "geonames_admin1": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "ascii_name": {
+                  "readOnly": true,
+                  "type": "string",
+                  "default": " "
+                },
+                "name": {
+                  "readOnly": true,
+                  "type": "string",
+                  "default": " "
+                },
+                "id": {
+                  "type": "integer",
+                  "readOnly": true,
+                  "default": 0
+                },
+                "code": {
+                  "readOnly": true,
+                  "type": "string",
+                  "default": " "
+                }
+              }
             }
           },
           "required": ["city", "id"]

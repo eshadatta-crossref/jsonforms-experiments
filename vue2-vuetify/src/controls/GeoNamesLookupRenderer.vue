@@ -69,7 +69,7 @@ const controlRenderer = defineComponent({
   },
   methods: {
     fetchAddress(id: string) {
-      console.log('FORMS: ', this.jsonforms.core);
+      console.log('FORMS: ', this.jsonforms);
       const url = new URL('http://api.geonames.org/getJSON');
       const params = { geonameId: id, username: 'roradmin' }; // or:
       url.search = new URLSearchParams(params).toString();

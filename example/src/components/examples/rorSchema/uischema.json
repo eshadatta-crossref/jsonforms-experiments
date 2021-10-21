@@ -28,7 +28,7 @@
       ]
     },
     {
-      "type": "Group",
+      "type": "HorizontalLayout",
       "elements": [
         {
           "type": "Control",
@@ -37,11 +37,41 @@
           "options": {
             "locationID": true
           }
+        }
+      ]
+    },
+    {
+      "type": "HorizontalLayout",
+      "elements": [
+        {
+          "type": "Control",
+          "label": "Latitude",
+          "scope": "#/properties/addresses/properties/lat"
+        },
+        {
+          "type": "Control",
+          "label": "Longitude",
+          "scope": "#/properties/addresses/properties/lng"
         },
         {
           "type": "Control",
           "label": "Geonames City",
           "scope": "#/properties/addresses/properties/geonames_city/properties/city"
+        },
+        {
+          "type": "Control",
+          "label": "Country Geonames ID",
+          "scope": "#/properties/addresses/properties/country_geonames_id"
+        }
+      ]
+    },
+    {
+      "type": "Group",
+      "elements": [
+        {
+          "type": "Control",
+          "label": "Geonames Admin 1",
+          "scope": "#/properties/addresses/properties/geonames_city/properties/geonames_admin1"
         }
       ]
     }
