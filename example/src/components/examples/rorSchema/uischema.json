@@ -33,7 +33,10 @@
         {
           "type": "Control",
           "Label": "Location ID",
-          "scope": "#/properties/addresses/properties/geonames_city/properties/id"
+          "scope": "#/properties/addresses/properties/geonames_city/properties/id",
+          "options": {
+            "locationID": true
+          }
         },
         {
           "type": "Control",

@@ -31,11 +31,15 @@
 <script lang="ts">
 import {
   ControlElement,
+  JsonFormsSubStates,
   JsonFormsRendererRegistryEntry,
   rankWith,
   isIntegerControl,
+  and,
+  Tester,
+  optionIs,
 } from '@jsonforms/core';
-import { defineComponent } from '../vue';
+import { defineComponent, inject } from '../vue';
 import {
   rendererProps,
   useJsonFormsControl,
@@ -46,7 +50,8 @@ import { useVuetifyControl } from '../util';
 import { VTextField } from 'vuetify/lib';
 
 const controlRenderer = defineComponent({
-  name: 'integer-control-renderer',
+  name: 'geonames-lookup-renderer',
+  inject: ['jsonforms', 'dispatch'],
   components: {
     ControlWrapper,
     VTextField,
@@ -61,17 +66,23 @@ const controlRenderer = defineComponent({
     );
   },
   methods: {
-    onInput(e: number) {
-      console.log(e);
-      const id = e.toString();
+    fetchAddress(id: string) {
+      const jsonforms = inject<JsonFormsSubStates>('jsonforms');
+      console.log('this: ', jsonforms);
       const url = new URL('http://api.geonames.org/getJSON');
-
       const params = { geonameId: id, username: 'roradmin' }; // or:
       url.search = new URLSearchParams(params).toString();
       fetch(url.toString()).then((response) => {
-        const info = response;
-        console.log(info.text());
+        response.json().then((data) => {
+          console.log('DATA: ', data);
+          console.log('JSONFORMS: ', this.jsonforms);
+        });
       });
+    },
+    onInput(e: number) {
+      console.log(e);
+      const id = e.toString();
+      this.fetchAddress(id);
     },
   },
   computed: {
@@ -84,8 +95,13 @@ const controlRenderer = defineComponent({
 
 export default controlRenderer;
 
+const locationIDTester: Tester = and(
+  isIntegerControl,
+  optionIs('locationID', true)
+);
+
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(10, isIntegerControl),
+  tester: rankWith(10, locationIDTester),
 };
 </script>
