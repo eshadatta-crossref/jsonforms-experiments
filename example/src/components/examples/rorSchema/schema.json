@@ -40,7 +40,8 @@
       "required": ["country_code", "country_name"]
     },
     "name": {
-      "$ref": "#/definitions/non-empty-string"
+      "$ref": "#/definitions/non-empty-string",
+      "default": "default"
     },
     "wikipedia_url": {
       "type": "string"
@@ -67,7 +68,8 @@
           "properties": {
             "city": {
               "type": "string",
-              "readOnly": true
+              "readOnly": true,
+              "default": "city"
             },
             "id": {
               "type": "integer"
@@ -99,7 +101,7 @@
               }
             }
           },
-          "required": ["city", "id"]
+          "required": ["id"]
         }
       },
       "required": ["geonames_city"]

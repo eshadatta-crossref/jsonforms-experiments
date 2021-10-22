@@ -389,15 +389,6 @@ export default defineComponent({
         if (comp.data.value) {
           data = comp.data.value;
         }
-        if (data && !Object.prototype.hasOwnProperty.call(data, '$schema')) {
-          if (
-            comp.example.schema &&
-            Object.prototype.hasOwnProperty.call(comp.example.schema, '$id')
-          ) {
-            data['$schema'] = comp.example.schema.$id;
-          }
-        }
-
         return data ? JSON.stringify(data, null, 2) : '';
       },
 

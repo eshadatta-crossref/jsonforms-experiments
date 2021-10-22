@@ -32,6 +32,8 @@
 import {
   ControlElement,
   JsonFormsSubStates,
+  Dispatch,
+  Actions,
   JsonFormsRendererRegistryEntry,
   rankWith,
   isIntegerControl,
@@ -48,10 +50,11 @@ import {
 import { default as ControlWrapper } from './ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
 import { VTextField } from 'vuetify/lib';
+import { CoreActions } from '@jsonforms/core';
+import set from 'lodash/fp/set';
 
 const controlRenderer = defineComponent({
   name: 'geonames-lookup-renderer',
-  inject: ['jsonforms', 'dispatch'],
   components: {
     ControlWrapper,
     VTextField,
@@ -60,22 +63,41 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
+    console.log('PROPS: ', props);
     const jsonforms = inject<JsonFormsSubStates>('jsonforms');
+    const s = jsonforms?.core?.schema;
+    const ui = jsonforms?.core?.uischema;
+    const dispatch = inject<Dispatch<CoreActions>>('dispatch');
     const vControl = useVuetifyControl(
       useJsonFormsControl(props),
       (value) => parseInt(value, 10) || undefined
     );
-    return { jsonforms, ...vControl };
+    return { ...vControl, jsonforms, ui, s, dispatch };
   },
   methods: {
     fetchAddress(id: string) {
-      console.log('FORMS: ', this.jsonforms);
+      console.log('PROPS: ', this.props);
+      const rootData = this.jsonforms?.core?.data;
       const url = new URL('http://api.geonames.org/getJSON');
       const params = { geonameId: id, username: 'roradmin' }; // or:
       url.search = new URLSearchParams(params).toString();
       fetch(url.toString()).then((response) => {
         response.json().then((data) => {
-          console.log('DATA: ', data);
+          let updatedData = rootData;
+          updatedData = set(
+            'addresses.geonames_city.city',
+            data.asciiName,
+            updatedData
+          );
+          if (this.dispatch) {
+            this.dispatch(
+              Actions.updateCore(
+                'addresses.geonames_city.city',
+                this.s,
+                this.ui
+              )
+            );
+          }
         });
       });
     },
