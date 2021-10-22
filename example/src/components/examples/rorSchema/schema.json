@@ -58,6 +58,18 @@
           "type": "number",
           "readOnly": true
         },
+        "city": {
+          "type": "string",
+          "readOnly": true
+        },
+        "state_code": {
+          "type": ["null", "string"],
+          "readOnly": true
+        },
+        "state": {
+          "readOnly": true,
+          "type": ["null", "string"]
+        },
         "country_geonames_id": {
           "type": "number",
           "readOnly": true
@@ -79,8 +91,8 @@
               "additionalProperties": false,
               "properties": {
                 "ascii_name": {
-                  "readOnly": true,
                   "type": "string",
+                  "readOnly": true,
                   "default": " "
                 },
                 "name": {

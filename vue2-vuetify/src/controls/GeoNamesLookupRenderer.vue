@@ -23,7 +23,6 @@
       @change="onChange"
       @focus="isFocused = true"
       @blur="isFocused = false"
-      @input="onInput"
     />
   </control-wrapper>
 </template>
@@ -31,7 +30,6 @@
 <script lang="ts">
 import {
   ControlElement,
-  JsonFormsSubStates,
   Dispatch,
   Actions,
   JsonFormsRendererRegistryEntry,
@@ -51,7 +49,6 @@ import { default as ControlWrapper } from './ControlWrapper.vue';
 import { useVuetifyControl } from '../util';
 import { VTextField } from 'vuetify/lib';
 import { CoreActions } from '@jsonforms/core';
-import set from 'lodash/fp/set';
 
 const controlRenderer = defineComponent({
   name: 'geonames-lookup-renderer',
@@ -63,45 +60,60 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    console.log('PROPS: ', props);
-    const jsonforms = inject<JsonFormsSubStates>('jsonforms');
-    const s = jsonforms?.core?.schema;
-    const ui = jsonforms?.core?.uischema;
     const dispatch = inject<Dispatch<CoreActions>>('dispatch');
     const vControl = useVuetifyControl(
       useJsonFormsControl(props),
       (value) => parseInt(value, 10) || undefined
     );
-    return { ...vControl, jsonforms, ui, s, dispatch };
+    return { ...vControl, dispatch };
   },
   methods: {
+    mapDict() {
+      return [
+        { path: 'addresses.lat', geoname: 'lat', type: 'float' },
+        { path: 'addresses.lng', geoname: 'lng', type: 'float' },
+        {
+          path: 'addresses.country_geonames_id',
+          geoname: 'countryId',
+          type: 'int',
+        },
+        {
+          path: 'addresses.geonames_city.city',
+          geoname: 'name',
+          type: 'string',
+        },
+      ];
+    },
+    checkData(data: string, type: string) {
+      switch (type) {
+        case 'float':
+          return parseFloat(data);
+        case 'int':
+          return parseInt(data);
+        default:
+          return data;
+      }
+    },
     fetchAddress(id: string) {
-      console.log('PROPS: ', this.props);
-      const rootData = this.jsonforms?.core?.data;
       const url = new URL('http://api.geonames.org/getJSON');
       const params = { geonameId: id, username: 'roradmin' }; // or:
       url.search = new URLSearchParams(params).toString();
       fetch(url.toString()).then((response) => {
         response.json().then((data) => {
-          let updatedData = rootData;
-          updatedData = set(
-            'addresses.geonames_city.city',
-            data.asciiName,
-            updatedData
-          );
           if (this.dispatch) {
-            this.dispatch(
-              Actions.updateCore(
-                'addresses.geonames_city.city',
-                this.s,
-                this.ui
-              )
-            );
+            let mapping = this.mapDict();
+            for (const entry of mapping) {
+              this.dispatch(
+                Actions.update(entry.path, () =>
+                  this.checkData(data[entry.geoname], entry.type)
+                )
+              );
+            }
           }
         });
       });
     },
-    onInput(e: number) {
+    onChange(e: number) {
       console.log(e);
       const id = e.toString();
       this.fetchAddress(id);
