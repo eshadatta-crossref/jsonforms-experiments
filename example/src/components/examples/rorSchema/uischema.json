@@ -57,6 +57,21 @@
           "type": "Control",
           "label": "Geonames City",
           "scope": "#/properties/addresses/properties/geonames_city/properties/city"
+        }
+      ]
+    },
+    {
+      "type": "HorizontalLayout",
+      "elements": [
+        {
+          "type": "Control",
+          "label": "Country Name",
+          "scope": "#/properties/country/properties/country_name"
+        },
+        {
+          "type": "Control",
+          "label": "Country Code",
+          "scope": "#/properties/country/properties/country_code"
         },
         {
           "type": "Control",
@@ -72,6 +87,11 @@
           "type": "Control",
           "label": "Geonames Admin 1",
           "scope": "#/properties/addresses/properties/geonames_city/properties/geonames_admin1"
+        },
+        {
+          "type": "Control",
+          "label": "Geonames Admin 2",
+          "scope": "#/properties/addresses/properties/geonames_city/properties/geonames_admin2"
         }
       ]
     }

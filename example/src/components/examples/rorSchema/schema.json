@@ -92,6 +92,28 @@
               "properties": {
                 "ascii_name": {
                   "type": "string",
+                  "readOnly": true
+                },
+                "name": {
+                  "readOnly": true,
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer",
+                  "readOnly": true
+                },
+                "code": {
+                  "readOnly": true,
+                  "type": "string"
+                }
+              }
+            },
+            "geonames_admin2": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "ascii_name": {
+                  "type": "string",
                   "readOnly": true,
                   "default": " "
                 },
