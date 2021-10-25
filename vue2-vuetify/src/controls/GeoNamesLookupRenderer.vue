@@ -115,12 +115,30 @@ const controlRenderer = defineComponent({
           return data;
       }
     },
-    processGeoNamesAdmin(level: string) {
+    mapGeoNamesAdmin(level: string) {
       return [
         { ror: 'name', geoname: 'adminName' + level, type: 'string' },
         { ror: 'ascii_name', geoname: 'adminName' + level, type: 'string' },
         { ror: 'id', geoname: 'adminId' + level, type: 'int' },
       ];
+    },
+    processGeoNamesAdmin(
+      geonameResponse: any,
+      data: any,
+      level: string,
+      fields: string[]
+    ) {
+      let path = 'addresses.geonames_city.geonames_admin' + level + '.';
+      let geonamesAdmin = this.mapGeoNamesAdmin(level);
+      for (const admin of geonamesAdmin) {
+        data = set(
+          path + admin.ror,
+          this.checkData(geonameResponse[admin.geoname], admin.type),
+          data
+        );
+      }
+      data = set(path + 'code', fields.join('.'), data);
+      return data;
     },
     fetchAddress(id: string) {
       const url = new URL('http://api.geonames.org/getJSON');
@@ -145,36 +163,16 @@ const controlRenderer = defineComponent({
               );
             }
             if (data.adminId1) {
-              let path = 'addresses.geonames_city.geonames_admin1.';
-              let geonamesAdmin1 = this.processGeoNamesAdmin('1');
-              for (const admin of geonamesAdmin1) {
-                updatedData = set(
-                  path + admin.ror,
-                  this.checkData(data[admin.geoname], admin.type),
-                  updatedData
-                );
-              }
-              updatedData = set(
-                path + 'code',
-                [data.countryCode, data.adminCode1].join('.'),
-                updatedData
-              );
+              updatedData = this.processGeoNamesAdmin(data, updatedData, '1', [
+                data.countryCode,
+                data.adminCode1,
+              ]);
               if (data.adminId2) {
-                let path = 'addresses.geonames_city.geonames_admin2.';
-                let geonamesAdmin2 = this.processGeoNamesAdmin('2');
-                for (const admin of geonamesAdmin2) {
-                  updatedData = set(
-                    path + admin.ror,
-                    this.checkData(data[admin.geoname], admin.type),
-                    updatedData
-                  );
-                }
-                updatedData = set(
-                  path + 'code',
-                  [data.countryCode, data.adminCode1, data.adminCode2].join(
-                    '.'
-                  ),
-                  updatedData
+                updatedData = this.processGeoNamesAdmin(
+                  data,
+                  updatedData,
+                  '2',
+                  [data.countryCode, data.adminCode1, data.adminCode2]
                 );
               }
             }
